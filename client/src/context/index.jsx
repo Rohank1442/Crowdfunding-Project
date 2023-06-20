@@ -6,6 +6,7 @@ import {
   useContractWrite,
 } from "@thirdweb-dev/react";
 import { ethers } from "ethers";
+import { joinSignature } from "ethers/lib/utils";
 
 const StateContext = createContext();
 console.log("hi1");
@@ -15,7 +16,7 @@ export const StateContextProvider = ({ children }) => {
     );
   const { mutateAsync: createCampaign } = useContractWrite(
     contract,
-    "createCampaign"
+    'createCampaign'
   );
 
   const address = useAddress();
@@ -38,13 +39,7 @@ console.log("hi2");
       console.log("Contract call failure", error);
     }
   };
-console.log("hi3");
-  const getCampaigns = async () => {
-    const campaigns = await contract.call('getCampaigns');
-    console.log("hi5");
-    console.log(campaigns)
-  }
-console.log("hi4");
+
   return (
     <StateContext.Provider
       value={{
@@ -52,7 +47,6 @@ console.log("hi4");
         contract,
         connect,
         createCampaign: publishCampaign,
-        getCampaigns,
       }}
     >
       {children}
