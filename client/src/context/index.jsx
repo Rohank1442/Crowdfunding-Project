@@ -6,6 +6,7 @@ import {
   useContractWrite,
 } from "@thirdweb-dev/react";
 import { ethers } from "ethers";
+import { parse } from "dotenv";
 
 const StateContext = createContext();
 export const StateContextProvider = ({ children }) => {
@@ -19,6 +20,7 @@ export const StateContextProvider = ({ children }) => {
 
   const address = useAddress();
   const connect = useMetamask();
+
   const publishCampaign = async (form) => {
     try {
       const data = await createCampaign({ args: [
@@ -35,6 +37,23 @@ export const StateContextProvider = ({ children }) => {
     }
   };
 
+  const getCampaigns = async () => {
+    const campaigns = await contract.call('getCampaigns');
+    
+    const parsedCampaigns = campaigns.map((campaign, i) => ({
+      owner: campaign.owner,
+      title: campaign.title,
+      description: campaign.description,
+      target: ethers.utils.formatEther(campaign.target.toString()),
+      deadline: campaign.deadline.toNumber(),
+      amountCollected: ethers.utils.formatEther(campaign.amountCollected.toString()),
+      image: campaign.image,
+      pId: i
+    }));
+    
+    return parsedCampaigns;
+  }
+
   return (
     <StateContext.Provider
       value={{
@@ -42,6 +61,7 @@ export const StateContextProvider = ({ children }) => {
         contract,
         connect,
         createCampaign: publishCampaign,
+        getCampaigns,
       }}
     >
       {children}
