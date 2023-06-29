@@ -6,6 +6,7 @@ import {
   useContractWrite,
 } from "@thirdweb-dev/react";
 import { ethers } from "ethers";
+import { parse } from "dotenv";
 
 const StateContext = createContext();
 export const StateContextProvider = ({ children }) => {
@@ -49,7 +50,7 @@ export const StateContextProvider = ({ children }) => {
       image: campaign.image,
       pId: i
     }));
-    
+    // console.log(parsedCampaigns);
     return parsedCampaigns;
   }
 

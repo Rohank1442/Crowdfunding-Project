@@ -20,12 +20,12 @@ const CampaignDetails = () => {
 
   const fetchDonators = async () => {
     const data = await getDonations(state.pId);
-    console.log(data);
+
     setDonators(data);
   };
 
   useEffect(() => {
-    if (contract) fetchDonators();
+    if(contract) fetchDonators();
   }, [contract, address]);
 
   const handleDonate = async () => {
